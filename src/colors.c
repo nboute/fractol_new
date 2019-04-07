@@ -6,11 +6,12 @@
 /*   By: niboute <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:35:20 by niboute           #+#    #+#             */
-/*   Updated: 2019/03/22 02:35:39 by niboute          ###   ########.fr       */
+/*   Updated: 2019/04/01 19:13:15 by niboute          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/header.h"
+#include <stdlib.h>
 
 int		ft_color_grad(unsigned int cola, unsigned int colb, int percent)
 {
@@ -23,4 +24,47 @@ int		ft_color_grad(unsigned int cola, unsigned int colb, int percent)
 	b = (colb & 255) - (cola & 255);
 	return (cola + ((((r * percent) / 100) * 65536) +
 				(((g * percent) / 100) * 256) + (b * percent) / 100));
+}
+
+int		ft_set_colors(t_vars *vars)
+{
+	int	i;
+	int	color;
+	int	color2;
+
+	vars->nb_cols = (vars->nb_color_set) * vars->nb_color_grad;
+	if (!vars->color_set)
+		return (-1);
+	if (!(vars->colors = (unsigned int *)malloc(sizeof(unsigned int)
+					* (vars->nb_cols))))
+		return (-1);
+	i = 0;
+	color = -1;
+	while (i < vars->nb_cols)
+	{
+		if (i % vars->nb_color_grad == 0)
+		{
+			color = (color + 1) % vars->nb_color_set;
+			color2 = (color + 1) % vars->nb_color_set;
+		}
+		vars->colors[i] = ft_color_grad(vars->color_set[color],
+				vars->color_set[color2], (((i % (vars->nb_color_grad)) * 100)
+					/ vars->nb_color_grad));
+		i++;
+	}
+	return (0);
+}
+
+int		ft_test_colors(t_vars *vars)
+{
+	vars->nb_color_set = 3;
+	if (!(vars->color_set = (unsigned int*)malloc(sizeof(unsigned int) *
+					vars->nb_color_set)))
+		return (-1);
+	vars->color_set[0] = RED;
+	vars->color_set[1] = YELLOW;
+	vars->color_set[2] = BLUE;
+	vars->nb_color_grad = 20;
+	ft_set_colors(vars);
+	return (0);
 }

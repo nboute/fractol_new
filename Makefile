@@ -6,14 +6,14 @@
 #    By: niboute <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/09 18:34:41 by niboute           #+#    #+#              #
-#    Updated: 2019/03/22 06:42:48 by niboute          ###   ########.fr        #
+#    Updated: 2019/04/07 18:30:07 by niboute          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME=fdf
+NAME=fractol
 
-SRC= colors.c draw_lines.c events.c events_2.c loop.c main.c menu.c parser.c \
-	 setup.c
+SRC= colors.c draw.c main_events.c menu_events.c loop.c main.c menu.c \
+	 setup.c fractals.c
 
 SRCDIR= src/
 
@@ -31,12 +31,10 @@ MLX= -L ./minilibx_macos -lmlx -framework OpenGL -framework AppKit
 
 CC= gcc
 
-CFLAGS= -Wall -Wextra -Werror
-
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT) $(LIBMLX)
-	$(CC) -o $@ $(OBJ) $(CFLAGS) $(MLX) $(FT)
+	$(CC) -o $@ $(OBJ) $(MLX) $(FT)
 
 $(LIBFT):
 	make -C libft/
