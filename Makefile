@@ -3,23 +3,25 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: niboute <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: niboute <niboute@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/09 18:34:41 by niboute           #+#    #+#              #
-#    Updated: 2019/04/07 18:30:07 by niboute          ###   ########.fr        #
+#    Updated: 2019/10/16 15:45:29 by niboute          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=fractol
 
 SRC= colors.c draw.c main_events.c menu_events.c loop.c main.c menu.c \
-	 setup.c fractals.c
+	 setup.c fractals.c mlx_alnum_keycodes.c
 
 SRCDIR= src/
 
 SRCS= $(addprefix $(SRCDIR), $(SRC))
 
 OBJ= $(SRCS:.c=.o)
+
+HEADER= ./inc/header.h
 
 LIBFT= libft/libft.a
 
@@ -31,9 +33,11 @@ MLX= -L ./minilibx_macos -lmlx -framework OpenGL -framework AppKit
 
 CC= gcc
 
+CFLAGS= -Wall -Wextra -Werror -g
+
 all: $(NAME)
 
-$(NAME): $(OBJ) $(LIBFT) $(LIBMLX)
+$(NAME): $(OBJ) $(LIBFT) $(LIBMLX) $(HEADER)
 	$(CC) -o $@ $(OBJ) $(MLX) $(FT)
 
 $(LIBFT):

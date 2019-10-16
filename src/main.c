@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niboute <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: niboute <niboute@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 20:12:25 by niboute           #+#    #+#             */
-/*   Updated: 2019/04/07 17:59:36 by niboute          ###   ########.fr       */
+/*   Updated: 2019/10/16 17:37:34 by niboute          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 #include <unistd.h>
 #include "../minilibx_macos/mlx.h"
 #include <fcntl.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 int		ft_exit(int err)
 {
@@ -25,71 +25,45 @@ int		ft_exit(int err)
 	exit(-1);
 }
 
-int		ft_init_default_menu_p2(t_mlx *mlx)
+int		init_default_menu_p2(t_mlx *mlx)
 {
 	int	i;
 
-	if (!(mlx->chvars->btns_vals = (char**)malloc(sizeof(char*) *
-					(BUTTONS + 1))))
-		return (-1);
-	i = 0;
-	while (i <= BUTTONS)
-		mlx->chvars->btns_vals[i++] = NULL;
-	printf("[Q]%s\n", mlx->chvars->fract_names[mlx->chvars->fractal]);
-	return (0);
-}
-
-int		ft_init_default_menu(t_mlx *mlx)
-{
-	int	i;
-	printf("[O]%s\n", *(mlx->chvars->fract_names));
-	if (!(mlx->chvars->btns_cols = (unsigned int*)malloc(sizeof(int) * BUTTONS)))
-		return (-1);
 	i = 0;
 	while (i < BUTTONS)
-		mlx->chvars->btns_cols[i++] = BLACK;
-	if (!(mlx->chvars->btns_txt = (char**)malloc(sizeof(char*) *
-					(BUTTONS + 1))))
-		return (-1);
-	mlx->chvars->btns_txt[BUTTONS] = NULL;
-	mlx->chvars->btns_txt[0] = ft_strdup("iter +/-");
-	mlx->chvars->btns_txt[1] = ft_strdup("vary col");
-	mlx->chvars->btns_txt[2] = ft_strdup("< fractal >");
-	mlx->chvars->btns_txt[3] = ft_strdup("reset");
-	mlx->chvars->btns_txt[4] = ft_strdup("void");
-	mlx->chvars->btns_txt[5] = ft_strdup("void");
-	mlx->chvars->btns_txt[6] = ft_strdup("void");
-	mlx->chvars->btns_txt[7] = ft_strdup("void");
-	mlx->chvars->btns_txt[8] = ft_strdup("ch colors");
-	ft_init_default_menu_p2(mlx);
-	mlx->chvars->win_ch[1] = 1;
-	return (0);
+		mlx->chvars.btns_vals[i++] = NULL;
+//	if (!(mlx->chvars.color_hex = (char*)malloc(sizeof(char) * 11)))
+//		return (0);
+	return (1);
 }
 
-int		ft_set_vars(t_vars *vars, char *name)
+int		init_default_menu(t_mlx *mlx)
 {
 	int	i;
 
 	i = 0;
-	if (!(vars->fract_names = (char**)malloc(sizeof(char*) * (NB_FRACTS + 1))))
-		return (-1);
-	vars->fract_names[0] = ft_strdup("mandelbrot");
-	vars->fract_names[1] = ft_strdup("julia");
-	vars->fract_names[2] = ft_strdup("burning_ship");
-	vars->fract_names[3] = NULL;
-	vars->fractal = 3;
-	while (i < NB_FRACTS)
-	{
-		printf("%s\n", vars->fract_names[i]);
-		if (!ft_strcmp(name, vars->fract_names[i]))
-			vars->fractal = i;
-		i++;
-	}
-	if (vars->fractal >= 3)
-	{
-		ft_putendl("Invalid name, fractal set to mandelbrot as default");
-		vars->fractal = 0;
-	}
+	while (i < BUTTONS)
+		mlx->chvars.btns_cols[i++] = BLACK;
+	if (!(mlx->chvars.btns_txt[0] = ft_strdup("iter +/-")))
+		return (0);
+	if (!(mlx->chvars.btns_txt[1] = ft_strdup("vary col")))
+		return (0);
+	if (!(mlx->chvars.btns_txt[2] = ft_strdup("<fractal>")))
+		return (0);
+	if (!(mlx->chvars.btns_txt[3] = ft_strdup("reset")))
+		return (0);
+	if (!(mlx->chvars.btns_txt[4] = ft_strdup("Zoom (power)")))
+		return (0);
+	if (!(mlx->chvars.btns_txt[5] = ft_strdup("ch colors")))
+		return (0);
+	if (!(init_default_menu_p2(mlx)))
+		return (0);
+	mlx->chvars.win_ch[1] = 1;
+	return (1);
+}
+
+void	set_vars_p2(t_vars *vars)
+{
 	vars->vary = 1;
 	vars->zoom = 1;
 	vars->zpow = 0;
@@ -105,7 +79,33 @@ int		ft_set_vars(t_vars *vars, char *name)
 	vars->colvar = 0;
 	vars->itermax = 100;
 	vars->variter = 0;
-	return (0);
+}
+
+int		set_vars(t_vars *vars, char *name)
+{
+	int	i;
+
+	i = 0;
+	if (!(vars->fract_names[0] = ft_strdup("mandelbrot")))
+		return (0);
+	if (!(vars->fract_names[1] = ft_strdup("julia")))
+		return (0);
+	if (!(vars->fract_names[2] = ft_strdup("burning_ship")))
+		return (0);
+	vars->fractal = 3;
+	while (i < NB_FRACTS)
+	{
+		if (!ft_strcmp(name, vars->fract_names[i]))
+			vars->fractal = i;
+		i++;
+	}
+	if (vars->fractal >= 3)
+	{
+		ft_putendl("Invalid name, fractal set to mandelbrot as default");
+		vars->fractal = 0;
+	}
+	set_vars_p2(vars);
+	return (1);
 }
 
 int		main(int ac, char **av)
@@ -113,21 +113,22 @@ int		main(int ac, char **av)
 	t_mlx	mlx;
 
 	if (ac != 2)
+	{
+		ft_putendl_fd("usage: ./fractol \
+		[fractal_name {\"julia\", \"mandelbrot\", \"burning_ship\"}]", 2);
 		return (0);
+	}
 	ac--;
 	av++;
-	if (!(mlx.chvars = (t_vars*)malloc(sizeof(t_vars))))
-		return (-1);
-	if (ft_set_vars(mlx.chvars, *av))
-		return (-1);
-	if (!ft_setup_mlx(&mlx))
-	{
-		ft_putendl("An error occured\n");
-	}
-	printf("%s\n", *(mlx.chvars->fract_names));
-	mlx_hook(mlx.mainwin->win, 17, 1L << 17, ft_exit, (void*)1);
-	ft_init_default_menu(&mlx);
-	mlx_loop_hook(mlx.mlx, ft_loop, &mlx);
+	if (!set_vars(&mlx.chvars, *av))
+		ft_exit(1);
+	if (!setup_mlx(&mlx))
+		ft_exit(1);
+	mlx_hook(mlx.mainwin.win, 17, 1L << 17, ft_exit, (void*)1);
+	if (!(init_default_menu(&mlx)))
+		ft_exit(1);
+	ft_putendl("Initialization finished");
+	mlx_loop_hook(mlx.mlx, loop, &mlx);
 	mlx_loop(mlx.mlx);
 	return (0);
 }

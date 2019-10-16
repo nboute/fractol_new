@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   colors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niboute <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: niboute <niboute@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:35:20 by niboute           #+#    #+#             */
-/*   Updated: 2019/04/01 19:13:15 by niboute          ###   ########.fr       */
+/*   Updated: 2019/10/16 14:06:58 by niboute          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/header.h"
 #include <stdlib.h>
 
-int		ft_color_grad(unsigned int cola, unsigned int colb, int percent)
+int		color_grad(unsigned int cola, unsigned int colb, int percent)
 {
 	short	r;
 	short	g;
@@ -26,7 +26,7 @@ int		ft_color_grad(unsigned int cola, unsigned int colb, int percent)
 				(((g * percent) / 100) * 256) + (b * percent) / 100));
 }
 
-int		ft_set_colors(t_vars *vars)
+int		set_colors(t_vars *vars)
 {
 	int	i;
 	int	color;
@@ -34,37 +34,37 @@ int		ft_set_colors(t_vars *vars)
 
 	vars->nb_cols = (vars->nb_color_set) * vars->nb_color_grad;
 	if (!vars->color_set)
-		return (-1);
+		return (0);
 	if (!(vars->colors = (unsigned int *)malloc(sizeof(unsigned int)
 					* (vars->nb_cols))))
-		return (-1);
+		return (0);
 	i = 0;
 	color = -1;
-	while (i < vars->nb_cols)
+	while (i < (int)vars->nb_cols)
 	{
 		if (i % vars->nb_color_grad == 0)
 		{
 			color = (color + 1) % vars->nb_color_set;
 			color2 = (color + 1) % vars->nb_color_set;
 		}
-		vars->colors[i] = ft_color_grad(vars->color_set[color],
+		vars->colors[i] = color_grad(vars->color_set[color],
 				vars->color_set[color2], (((i % (vars->nb_color_grad)) * 100)
 					/ vars->nb_color_grad));
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
-int		ft_test_colors(t_vars *vars)
+int		set_default_colors(t_vars *vars)
 {
 	vars->nb_color_set = 3;
 	if (!(vars->color_set = (unsigned int*)malloc(sizeof(unsigned int) *
 					vars->nb_color_set)))
-		return (-1);
+		return (0);
 	vars->color_set[0] = RED;
 	vars->color_set[1] = YELLOW;
 	vars->color_set[2] = BLUE;
 	vars->nb_color_grad = 20;
-	ft_set_colors(vars);
-	return (0);
+	set_colors(vars);
+	return (1);
 }

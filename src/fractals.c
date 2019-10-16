@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   fractals.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niboute <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: niboute <niboute@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/07 18:07:50 by niboute           #+#    #+#             */
-/*   Updated: 2019/04/07 18:32:30 by niboute          ###   ########.fr       */
+/*   Updated: 2019/10/11 16:30:00 by niboute          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/header.h"
 #include <math.h>
 
-int		ft_draw_julia_point(double zx, double zy, t_vars *vars)
+int		draw_julia_point(double zx, double zy, t_vars *vars)
 {
 	double	tmp;
 	int		iter;
@@ -32,7 +32,7 @@ int		ft_draw_julia_point(double zx, double zy, t_vars *vars)
 		return (iter == vars->itermax ? WHITE : BLACK);
 }
 
-int		ft_draw_mandelbrot_point(double cx, double cy, t_vars *vars)
+int		draw_mandelbrot_point(double cx, double cy, t_vars *vars)
 {
 	double	zx;
 	double	zy;
@@ -56,7 +56,7 @@ int		ft_draw_mandelbrot_point(double cx, double cy, t_vars *vars)
 	else
 		return (iter == vars->itermax ? WHITE : BLACK);
 }
-int		ft_draw_burning_ship_point(double cx, double cy, t_vars *vars)
+int		draw_burning_ship_point(double cx, double cy, t_vars *vars)
 {
 	double	zx;
 	double	zy;
@@ -81,7 +81,7 @@ int		ft_draw_burning_ship_point(double cx, double cy, t_vars *vars)
 		return (iter == vars->itermax ? WHITE : BLACK);
 }
 
-void	*ft_draw_fractal_x(void *ptr)
+void	*draw_fractal_x(void *ptr)
 {
 	t_mlx	*mlx;
 	int		x;
@@ -95,10 +95,14 @@ void	*ft_draw_fractal_x(void *ptr)
 	while (y < ymax)
 	{
 		x = 0;
-		tmpy = mlx->chvars->fractal == 1 ? (double)(y - MAINWINHEI / 2) / (double)(MAINWINHEI * mlx->chvars->zoom / 2) : ft_dmap(y, MAINWINHEI, mlx->chvars->ymin, mlx->chvars->ymax);
+		tmpy = mlx->chvars.fractal == 1 ? ((double)(y - MAINWINHEI / 2)
+			/ (double)(MAINWINHEI * mlx->chvars.zoom / 2)) + mlx->chvars.pady
+			: ft_dmap(y, MAINWINHEI, mlx->chvars.ymin, mlx->chvars.ymax);
 		while (x < MAINWINWID)
 		{
-			*(unsigned*)(mlx->mainwin->data + y * mlx->mainwin->size_line + x * (mlx->mainwin->bpx / 8)) = mlx->fractal_draw(mlx->chvars->tmpx[x], tmpy, mlx->chvars);
+			*(unsigned*)(mlx->mainwin.data + y * mlx->mainwin.size_line
+				+ x * (mlx->mainwin.bpx / 8))
+				= mlx->fractal_draw(mlx->chvars.tmpx[x], tmpy, &mlx->chvars);
 			x++;
 		}
 		y++;
