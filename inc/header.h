@@ -6,7 +6,7 @@
 /*   By: niboute <niboute@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 11:08:05 by niboute           #+#    #+#             */
-/*   Updated: 2019/10/16 17:38:52 by niboute          ###   ########.fr       */
+/*   Updated: 2019/10/19 15:02:39 by niboute          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@
 # define CPU_THREADS 4
 # define POW_MAX 48
 # define NB_FRACTS 3
-#include "../libft/libft.h"
-#include "../minilibx_macos/mlx.h"
-#include <pthread.h>
+# include "../libft/libft.h"
+# include "../minilibx_macos/mlx.h"
+# include <pthread.h>
+
 typedef struct			s_win
 {
 	void				*win;
@@ -63,10 +64,10 @@ typedef struct			s_vars
 	short				variter;
 	char				color_hex[11];
 	char				color_menu_text[11];
-	unsigned int        *color_set;
-	int                 nb_color_set;
-	int                 nb_color_grad;
-	int                 nb_cols;
+	unsigned int		*color_set;
+	int					nb_color_set;
+	int					nb_color_grad;
+	int					nb_cols;
 	unsigned int		*colors;
 	unsigned short		menumode;
 	unsigned short		index;
@@ -87,7 +88,7 @@ typedef struct			s_mlx
 	struct s_win		mainwin;
 	struct s_win		menuwin;
 	struct s_vars		chvars;
-	int	(*fractal_draw)(double, double, t_vars*);
+	int					(*fractal_draw)(double, double, t_vars*);
 }						t_mlx;
 
 typedef struct			s_thread
@@ -97,33 +98,42 @@ typedef struct			s_thread
 	pthread_t			thread;
 }						t_thread;
 
-t_mlx	*setup_mlx(t_mlx *mlx);
-t_mlx	*read_file(int fd, t_mlx *mlx);
-int		bind_events(t_mlx *mlx);
-int		ft_exit();
-int		loop(t_mlx *mlx);
-int		resetvals(t_mlx *mlx);
-int		init_default_menu(t_mlx *mlx);
-void	draw_buttons(t_mlx *mlx, t_win *win);
-void	draw_default_menu(t_mlx *mlx);
-void	draw_menu(t_mlx *mlx);
-void	reset_all(t_vars *vars);
-int		color_grad(unsigned int cola, unsigned int colb, int percent);
-int		init_menu_win(t_mlx *mlx);
-int		menu_mouse_event(int button, int x, int y, t_vars *vars);
-int		main_mouse_event(int button, int x, int y, t_vars *vars);
-int		menu_key_event(int keycode, t_vars *vars);
-int		main_key_event(int keycode, t_vars *vars);
-int		menu_mouse_release_event(int button, int x, int y, t_vars *vars);
-int		draw_fractal(t_mlx *mlx);
-int			reset_fractal(t_vars *vars);
-void	draw_menu_x(t_mlx *mlx);
-int		set_colors(t_vars *vars);
-int		main_mouse_hover_event(int x, int y, t_vars *vars);
-void	*draw_fractal_x(void *ptr);
-int		draw_julia_point(double zx, double zy, t_vars *vars);
-int		draw_burning_ship_point(double cx, double cy, t_vars *vars);
-int		draw_mandelbrot_point(double cx, double cy, t_vars *vars);
-int		set_default_colors(t_vars *vars);
-int		get_alnum_from_keycode(int keycode);
+t_mlx					*setup_mlx(t_mlx *mlx);
+int						ft_exit();
+int						loop(t_mlx *mlx);
+int						init_default_menu(t_mlx *mlx);
+void					draw_buttons(t_mlx *mlx, t_win *win);
+void					draw_default_menu(t_mlx *mlx);
+int						color_grad(unsigned int cola, unsigned int colb,
+						int percent);
+int						init_menu_win(t_mlx *mlx);
+int						menu_mouse_event(int button, int x, int y,
+						t_vars *vars);
+int						main_mouse_event(int button, int x, int y,
+						t_vars *vars);
+int						menu_key_event(int keycode, t_vars *vars);
+int						main_key_event(int keycode, t_vars *vars);
+int						draw_fractal(t_mlx *mlx);
+int						reset_fractal(t_vars *vars);
+void					draw_menu_x(t_mlx *mlx);
+int						set_colors(t_vars *vars);
+int						main_mouse_hover_event(int x, int y, t_vars *vars);
+void					*draw_fractal_x(void *ptr);
+int						draw_julia_point(double zx, double zy, t_vars *vars);
+int						draw_burning_ship_point(double cx, double cy,
+						t_vars *vars);
+int						draw_mandelbrot_point(double cx, double cy,
+						t_vars *vars);
+int						set_default_colors(t_vars *vars);
+int						get_alnum_from_keycode(int keycode);
+void					adapt_padding(int button, int x, int y, t_vars *vars);
+void					zoom(int button, int x, int y, t_vars *vars);
+void					translate_julia(int keycode, t_vars *vars);
+void					translate_default_fracts(int keycode, t_vars *vars);
+int						preset_menu_key_event(int keycode, t_vars *vars);
+int						color_menu_key_event(int keycode, t_vars *vars);
+void					choose_color_menu(t_mlx *mlx);
+void					fill_color_menu_string(t_vars *vars, char *str);
+int						draw_color_presets_menu(t_mlx *mlx, int index);
+int						draw_color_presets_menu_p2(t_mlx *mlx, int index);
 #endif

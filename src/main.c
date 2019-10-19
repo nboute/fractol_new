@@ -6,35 +6,20 @@
 /*   By: niboute <niboute@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 20:12:25 by niboute           #+#    #+#             */
-/*   Updated: 2019/10/16 17:37:34 by niboute          ###   ########.fr       */
+/*   Updated: 2019/10/19 15:00:57 by niboute          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/header.h"
 
-#include <unistd.h>
 #include "../minilibx_macos/mlx.h"
-#include <fcntl.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 int		ft_exit(int err)
 {
 	if (err)
 		ft_putstr("An error has occured\n");
 	exit(-1);
-}
-
-int		init_default_menu_p2(t_mlx *mlx)
-{
-	int	i;
-
-	i = 0;
-	while (i < BUTTONS)
-		mlx->chvars.btns_vals[i++] = NULL;
-//	if (!(mlx->chvars.color_hex = (char*)malloc(sizeof(char) * 11)))
-//		return (0);
-	return (1);
 }
 
 int		init_default_menu(t_mlx *mlx)
@@ -56,8 +41,9 @@ int		init_default_menu(t_mlx *mlx)
 		return (0);
 	if (!(mlx->chvars.btns_txt[5] = ft_strdup("ch colors")))
 		return (0);
-	if (!(init_default_menu_p2(mlx)))
-		return (0);
+	i = 0;
+	while (i < BUTTONS)
+		mlx->chvars.btns_vals[i++] = NULL;
 	mlx->chvars.win_ch[1] = 1;
 	return (1);
 }
@@ -124,10 +110,8 @@ int		main(int ac, char **av)
 		ft_exit(1);
 	if (!setup_mlx(&mlx))
 		ft_exit(1);
-	mlx_hook(mlx.mainwin.win, 17, 1L << 17, ft_exit, (void*)1);
 	if (!(init_default_menu(&mlx)))
 		ft_exit(1);
-	ft_putendl("Initialization finished");
 	mlx_loop_hook(mlx.mlx, loop, &mlx);
 	mlx_loop(mlx.mlx);
 	return (0);

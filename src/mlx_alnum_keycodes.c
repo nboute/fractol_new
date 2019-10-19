@@ -6,7 +6,7 @@
 /*   By: niboute <niboute@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 15:44:49 by niboute           #+#    #+#             */
-/*   Updated: 2019/10/16 16:06:42 by niboute          ###   ########.fr       */
+/*   Updated: 2019/10/16 17:51:12 by niboute          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int		get_key_letter_p3(int keycode)
 	return (-1);
 }
 
-int	get_key_letter(int keycode)
+int		get_key_letter(int keycode)
 {
 	if (keycode < 10)
 		return (get_key_letter_p1(keycode));

@@ -6,7 +6,7 @@
 /*   By: niboute <niboute@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/07 18:07:50 by niboute           #+#    #+#             */
-/*   Updated: 2019/10/11 16:30:00 by niboute          ###   ########.fr       */
+/*   Updated: 2019/10/19 15:01:23 by niboute          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int		draw_mandelbrot_point(double cx, double cy, t_vars *vars)
 	else
 		return (iter == vars->itermax ? WHITE : BLACK);
 }
+
 int		draw_burning_ship_point(double cx, double cy, t_vars *vars)
 {
 	double	zx;
@@ -101,8 +102,8 @@ void	*draw_fractal_x(void *ptr)
 		while (x < MAINWINWID)
 		{
 			*(unsigned*)(mlx->mainwin.data + y * mlx->mainwin.size_line
-				+ x * (mlx->mainwin.bpx / 8))
-				= mlx->fractal_draw(mlx->chvars.tmpx[x], tmpy, &mlx->chvars);
+				+ x * (mlx->mainwin.bpx / 8)) = mlx->fractal_draw(
+				mlx->chvars.tmpx[x], tmpy, &mlx->chvars);
 			x++;
 		}
 		y++;
